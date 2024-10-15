@@ -1,0 +1,54 @@
+name: Build and Release Angular App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Build the Angular app (you can adjust configurations as needed)
+      - name: Build Angular app
+        run: npm run build -- --company1
+
+      # Step 5: Generate a new version
+      - name: Bump version and push tag
+        id: bump_version
+        run: |
+          # Increment patch version (or you can change to minor/major depending on your versioning strategy)
+          NEW_VERSION=$(npm version patch --no-git-tag-version)
+          echo "New version: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_ENV
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git commit -a -m "chore: bump version to $NEW_VERSION"
+          git tag $NEW_VERSION
+          git push origin main --tags
+
+      # Step 6: Create GitHub release with the new version
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.version }}
+          release_name: Release ${{ env.version }}
+          draft: false
+          prerelease: false
