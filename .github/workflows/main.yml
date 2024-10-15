@@ -35,32 +35,21 @@ jobs:
         id: last_used_tag
         run: |
           git fetch --tags
-          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          echo "Latest Tag: $latest_tag"
-          echo "::set-output name=tag::$latest_tag"
+        
+          # Get the latest tag or default to v0.0.0 if no tags exist
+          latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          echo "Latest tag: $latest_tag"
+        
+          # Split the version number into major, minor, and patch
+          IFS='.' read -r major minor patch <<<"${latest_tag#v}"
 
-      - name: Increment version
-        id: increment_tag
-        run: |
-          latest_tag=${{ steps.get_latest_tag.outputs.tag }}
-          
-          version=${latest_tag#v}
-          IFS='.' read -r -a version_parts <<< "$version"
-          
-          major=${version_parts[0]}
-          minor=${version_parts[1]}
-          patch=${version_parts[2]}
-
+          # Increment the patch version (customize this logic if needed)
           patch=$((patch + 1))
 
+          # Create the new version tag
           new_tag="v$major.$minor.$patch"
-          
-          echo "New Tag: $new_tag"
-          echo "::set-output name=new_tag::$new_tag"
+          echo "New tag: $new_tag"
 
-      - name: Create and push new tag
-        run: |
-          new_tag=${{ steps.increment_tag.outputs.new_tag }}
-          
+          # Create the new tag and push it
           git tag $new_tag
           git push origin $new_tag
