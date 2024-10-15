@@ -37,8 +37,8 @@ jobs:
           git fetch --tags
         
           # Get the latest tag or default to v0.0.0 if no tags exist
-          latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0")
-          echo "Latest tag: $latest_tag"
+          latest_tag=$(git describe --tags --abbrev=0 $(git rev-list --tags --max-count=1) || echo "v0.0.0")
+          echo "Latest tag reachable from this commit: $latest_tag"
         
           IFS='.' read -r major minor patch <<<"${latest_tag#v}"
 
