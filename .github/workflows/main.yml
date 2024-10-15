@@ -10,49 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.2.1
+      - uses: actions/checkout@v4.2.1
 
       - name: Cache node modules
-        uses: actions/cache@v1
+        id: cache-npm
+        uses: actions/cache@v4.1.1
+        env:
+          cache-name: cache-node-modules
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4.0.4
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build the Angular app (you can adjust configurations as needed)
       - name: Build Angular app
         run: npm run build:ci
-
-      # Step 5: Generate a new version
-      - name: Bump version and push tag
-        id: bump_version
-        run: |
-          # Increment patch version (or you can change to minor/major depending on your versioning strategy)
-          NEW_VERSION=$(npm version patch --no-git-tag-version)
-          echo "New version: $NEW_VERSION"
-          echo "version=$NEW_VERSION" >> $GITHUB_ENV
-          git config user.name "GitHub Action"
-          git config user.email "action@github.com"
-          git commit -a -m "chore: bump version to $NEW_VERSION"
-          git tag $NEW_VERSION
-          git push origin main --tags
-
-      # Step 6: Create GitHub release with the new version
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.version }}
-          release_name: Release ${{ env.version }}
-          draft: false
-          prerelease: false
