@@ -31,15 +31,18 @@ jobs:
       - name: Build Angular app
         run: npm run build:ci
 
-      - name: Get the previous tag
-        id: previous_tag
+      - name: Get the last used tag
+        id: last_used_tag
         run: |
-          git fetch --tags --all
-          CURRENT_COMMIT=$(git rev-parse HEAD)
+          # Fetch all tags
+          git fetch --tags
 
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD)
-          echo "Previous tag is: $PREV_TAG"
-          echo "::set-output name=prev_tag::$PREV_TAG"
+          # Find the most recent tag
+          LAST_TAG=$(git describe --tags --abbrev=0)
+          echo "Last used tag is: $LAST_TAG"
 
-      - name: Use the previous tag
-        run: echo "The previous tag is ${{ steps.previous_tag.outputs.prev_tag }}"
+          # Set the tag as output for other steps
+          echo "::set-output name=last_tag::$LAST_TAG"
+
+      - name: Use the last used tag
+        run: echo "The last used tag is ${{ steps.last_used_tag.outputs.last_tag }}"
