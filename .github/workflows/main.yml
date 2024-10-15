@@ -31,12 +31,11 @@ jobs:
       - name: Build Angular app
         run: npm run build:ci
 
-      - name: Get the last used tag
+      - name: Increment Version
         id: last_used_tag
         run: |
           git fetch --tags
         
-          # Get the latest tag or default to v0.0.0 if no tags exist
           latest_tag=$(git describe --tags --abbrev=0 $(git rev-list --tags --max-count=1) || echo "v0.0.0")
           echo "Latest tag reachable from this commit: $latest_tag"
         
@@ -44,10 +43,12 @@ jobs:
 
           patch=$((patch + 1))
 
-          # Create the new version tag
           new_tag="v$major.$minor.$patch"
           echo "New tag: $new_tag"
-
-          # Create the new tag and push it
           git tag $new_tag
           git push origin $new_tag
+          
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with: 
+          name: "test"
