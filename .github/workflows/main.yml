@@ -32,16 +32,8 @@ jobs:
         run: npm run build:ci
 
       - name: Create tag
-        uses: actions/github-script@v7.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/testtag',
-              sha: context.sha
-            })
+        uses: juliansangillo/tag-version@v1  
+        with:  
+          production-branch: master
             
       - uses: ncipollo/release-action@v1
