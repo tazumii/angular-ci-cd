@@ -53,6 +53,8 @@ jobs:
           
       - name: Create GitHub Release  
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.auto_increment.outputs.new_tag }}  # Reference the tag created in the previous step
           release_name: ${{ steps.auto_increment.outputs.new_tag }}  # Set release name the same as the tag
