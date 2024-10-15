@@ -32,7 +32,7 @@ jobs:
         run: npm run build:ci
 
       - name: Increment Version
-        id: last_used_tag
+        id: auto_increment
         run: |
           git fetch --tags
         
@@ -45,10 +45,17 @@ jobs:
 
           new_tag="v$major.$minor.$patch"
           echo "New tag: $new_tag"
+          
+          echo "::set-output name=new_tag::$new_tag"
+          
           git tag $new_tag
           git push origin $new_tag
           
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with: 
-          name: "test"
+      - name: Create GitHub Release  
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.auto_increment.outputs.new_tag }}  # Reference the tag created in the previous step
+          release_name: ${{ steps.auto_increment.outputs.new_tag }}  # Set release name the same as the tag
+          body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"  # Customize release notes
+          draft: false  # Set to true if you want to create it as a draft
+          prerelease: false  # Set to true if it's a prerelease
