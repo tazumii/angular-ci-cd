@@ -43,3 +43,5 @@ jobs:
               ref: 'refs/tags/testtag',
               sha: context.sha
             })
+            
+      - uses: ncipollo/release-action@v1
