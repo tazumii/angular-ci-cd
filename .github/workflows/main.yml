@@ -46,7 +46,7 @@ jobs:
           new_tag="v$major.$minor.$patch"
           echo "new_tag: $new_tag"
           
-          echo "{name}=$new_tag" >> $GITHUB_OUTPUT
+          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
           
           git tag $new_tag
           git push origin $new_tag
