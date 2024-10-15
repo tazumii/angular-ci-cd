@@ -40,10 +40,8 @@ jobs:
           latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0")
           echo "Latest tag: $latest_tag"
         
-          # Split the version number into major, minor, and patch
           IFS='.' read -r major minor patch <<<"${latest_tag#v}"
 
-          # Increment the patch version (customize this logic if needed)
           patch=$((patch + 1))
 
           # Create the new version tag
