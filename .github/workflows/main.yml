@@ -30,3 +30,7 @@ jobs:
 
       - name: Build Angular app
         run: npm run build:ci
+
+      - uses: ncipollo/release-action@v1
+        with:
+            name: "helo"
