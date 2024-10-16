@@ -32,7 +32,9 @@ jobs:
         run: npm run build:ci
 
       - name: Zip build output
-        run: zip -r app.zip ./dist/angular-ci-cd
+        run: |
+          cd dist/angular-ci-cd
+          zip -r ../../app.zip .
 
       - name: Increment Version
         id: auto_increment
@@ -62,4 +64,4 @@ jobs:
           body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"  # Customize release notes
           draft: false  # Set to true if you want to create it as a draft
           prerelease: false  # Set to true if it's a prerelease
-          artifacts: "app.zip"
+          artifacts: "/home/runner/work/angular-ci-cd/angular-ci-cd/dist/app.zip"
