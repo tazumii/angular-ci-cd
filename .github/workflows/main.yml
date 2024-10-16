@@ -55,12 +55,10 @@ jobs:
           git push origin $new_tag
           
       - name: Create GitHub Release  
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ steps.auto_increment.outputs.new_tag }}  # Reference the tag created in the previous step
-          release_name: ${{ steps.auto_increment.outputs.new_tag }}  # Set release name the same as the tag
+          tag: ${{ steps.auto_increment.outputs.new_tag }}  # Reference the tag created in the previous step
+          name: ${{ steps.auto_increment.outputs.new_tag }}  # Set release name the same as the tag
           body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"  # Customize release notes
           draft: false  # Set to true if you want to create it as a draft
           prerelease: false  # Set to true if it's a prerelease
