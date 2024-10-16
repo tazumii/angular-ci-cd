@@ -62,4 +62,4 @@ jobs:
           body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"  # Customize release notes
           draft: false  # Set to true if you want to create it as a draft
           prerelease: false  # Set to true if it's a prerelease
-          artifacts: "./dist/angular-ci-cd.zip"
+          artifacts: "./dist/app.zip"
