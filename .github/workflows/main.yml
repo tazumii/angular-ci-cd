@@ -59,7 +59,7 @@ jobs:
         
           IFS='.' read -r major minor patch <<<"${latest_tag#v}"
 
-          case {{ steps.commit_variables.outputs.increment }}  in
+          case ${{ steps.commit_variables.outputs.increment }}  in
             major)
               major=$((major + 1))
               minor=0
@@ -74,7 +74,7 @@ jobs:
               ;;
           esac
 
-          new_tag="v$major.$minor.$patch"
+          new_tag="v$major.$minor.$patch-${{ steps.commit_variables.outputs.configuration }}"
           echo "new_tag: $new_tag"
           
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
