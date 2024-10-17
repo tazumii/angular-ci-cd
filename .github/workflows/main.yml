@@ -15,9 +15,13 @@ jobs:
       - name: Read commit variables
         run: | 
           commit_message=$(git log -1 --pretty=%B)
-          config=$(echo "$commit_message" | grep -oP '(?<=\[configuration=)[^\]]+')
-          echo "config=$config" >> $GITHUB_OUTPUT
+          
+          configuration=$(echo "$commit_message" | grep -oP '(?<=\[configuration=)[^\]]+')
+          echo "Configuration: $configuration"
+          echo "configuration=$configuration" >> $GITHUB_OUTPUT
+          
           increment=$(echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+')
+          echo "Increment: $increment"
           echo "increment=$increment" >> $GITHUB_OUTPUT
       
       - name: Cache node modules
