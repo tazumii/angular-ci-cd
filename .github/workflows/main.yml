@@ -12,13 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.1
 
-      - name: Read commit
+      - name: Read commit variables
         run: | 
           commit_message=$(git log -1 --pretty=%B)
-          echo "Commit message: $commit_message"
-
           config=$(echo "$commit_message" | grep -oP '(?<=\[configuration=)[^\]]+')
-          echo "$config"
+          echo "config=$config" >> $GITHUB_OUTPUT
+          increment=$(echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+')
+          echo "increment=$increment" >> $GITHUB_OUTPUT
       
       - name: Cache node modules
         id: cache-npm
