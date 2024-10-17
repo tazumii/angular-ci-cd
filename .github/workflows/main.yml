@@ -42,7 +42,7 @@ jobs:
         run: npm install
 
       - name: Build Angular app
-        run: npm run build:ci
+        run: npm run build:${{steps.commit_variables.outputs.configuration}}
 
       - name: Zip build output
         run: |
@@ -85,9 +85,9 @@ jobs:
       - name: Create GitHub Release  
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.auto_increment.outputs.new_tag }}  # Reference the tag created in the previous step
-          name: ${{ steps.auto_increment.outputs.new_tag }}  # Set release name the same as the tag
-          body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"  # Customize release notes
-          draft: false  # Set to true if you want to create it as a draft
-          prerelease: false  # Set to true if it's a prerelease
+          tag: ${{ steps.auto_increment.outputs.new_tag }}
+          name: ${{ steps.auto_increment.outputs.new_tag }}
+          body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"
+          draft: false
+          prerelease: false
           artifacts: "app.zip"
