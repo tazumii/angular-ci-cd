@@ -1,4 +1,4 @@
-name: Build and Release Angular App
+name: Build Client
 
 on:
   workflow_dispatch:
@@ -18,8 +18,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.2.1
         with:
-          ref: 'v0.1.1-company1'
-      - name: input
+          ref: echo ${{ github.event.inputs.version }}
+          
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v4.1.1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular app
+        run: npm run build:${{ github.event.inputs.companyCredentials }}
+
+      - name: Zip build output
         run: |
-          echo ${{ github.event.inputs.version }}
-          echo ${{ github.event.inputs.companyCredentials }}
+          cd dist/angular-ci-cd
+          zip -r ../../${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}.zip .
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: ${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}.zip
+          path: ${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}.zip
