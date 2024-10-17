@@ -21,12 +21,13 @@ jobs:
           echo "Configuration: $configuration"
           echo "configuration=$configuration" >> $GITHUB_OUTPUT
           
-          increment=$(echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+')
-          if [[ -z "$increment" ]]; then
-            echo "No increment found in commit message."
-          else
+
+          if echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+'; then
+            increment=$(echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+')
             echo "Increment: $increment"
-            echo "increment=$increment" >> $GITHUB_OUTPUT
+            echo "increment=$increment" >> $GITHUB_OUTPUT   
+          else
+            echo "No increment found in commit message."
           fi
       
       - name: Cache node modules
