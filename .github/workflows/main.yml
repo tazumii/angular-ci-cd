@@ -16,12 +16,7 @@ jobs:
         id: commit_variables
         run: | 
           commit_message=$(git log -1 --pretty=%B)
-          
-          configuration=$(echo "$commit_message" | grep -oP '(?<=\[configuration=)[^\]]+')
-          echo "Configuration: $configuration"
-          echo "configuration=$configuration" >> $GITHUB_OUTPUT
-          
-
+      
           if echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+'; then
             increment=$(echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+')
             echo "Increment: $increment"   
@@ -31,30 +26,6 @@ jobs:
           fi
 
           echo "increment=$increment" >> $GITHUB_OUTPUT
-      
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v4.1.1
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Angular app
-        run: npm run build:${{steps.commit_variables.outputs.configuration}}
-
-      - name: Zip build output
-        run: |
-          cd dist/angular-ci-cd
-          zip -r ../../app-${{steps.commit_variables.outputs.configuration}}.zip .
 
       - name: Increment Version
         id: auto_increment
@@ -84,7 +55,7 @@ jobs:
               ;;
           esac
 
-          new_tag="v$major.$minor.$patch-${{ steps.commit_variables.outputs.configuration }}"
+          new_tag="v$major.$minor.$patch"
           echo "new_tag: $new_tag"
           
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
@@ -100,4 +71,3 @@ jobs:
           body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"
           draft: false
           prerelease: false
-          artifacts: "app-${{steps.commit_variables.outputs.configuration}}.zip"
