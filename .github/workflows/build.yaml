@@ -1,0 +1,25 @@
+name: Build and Release Angular App
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version of the release'
+        required: true
+      companyCredentials:
+        description: 'Encrypted company credentials'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.1
+        with:
+          ref: 'v0.1.1-company1'
+      - name: input
+        run: |
+          echo ${{ github.event.inputs.version }}
+          echo ${{ github.event.inputs.companyCredentials }}
