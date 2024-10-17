@@ -90,4 +90,4 @@ jobs:
           body: "Automatically generated release for tag ${{ steps.auto_increment.outputs.new_tag }}"
           draft: false
           prerelease: false
-          artifacts: "app.zip"
+          artifacts: "app-${{steps.commit_variables.outputs.configuration}}.zip"
