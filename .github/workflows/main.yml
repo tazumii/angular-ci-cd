@@ -47,7 +47,7 @@ jobs:
       - name: Zip build output
         run: |
           cd dist/angular-ci-cd
-          zip -r ../../app.zip .
+          zip -r ../../app-${{steps.commit_variables.outputs.configuration}}.zip .
 
       - name: Increment Version
         id: auto_increment
