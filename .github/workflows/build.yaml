@@ -38,14 +38,12 @@ jobs:
 
       - name: Build Angular app
         run: npm run build:${{ github.event.inputs.companyCredentials }}
-
-      - name: Zip build output
-        run: |
-          cd dist/angular-ci-cd
-          zip -r ../../${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}.zip .
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4.4.3
         with:
-          name: ${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}.zip
-          path: ${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}.zip
+          name: ${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}
+          path: dist/angular-ci-cd
+          if-no-files-found: 'error'
+          retention-days: 1
+          
