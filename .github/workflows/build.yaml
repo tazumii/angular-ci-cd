@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Decrypt Credentials
         run: |
-          echo ${{github.event.inputs.companyCredentials}} | openssl enc -aes-256-cbc -e -k ${{ secrets.BUILD_KEY }} -pbkdf2 -a
+          echo ${{github.event.inputs.companyCredentials}} | openssl enc -aes-256-cbc -d -k ${{ secrets.BUILD_KEY }} -pbkdf2 -a
       
       - name: Checkout code
         uses: actions/checkout@v4.2.1
