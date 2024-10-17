@@ -24,11 +24,13 @@ jobs:
 
           if echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+'; then
             increment=$(echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+')
-            echo "Increment: $increment"
-            echo "increment=$increment" >> $GITHUB_OUTPUT   
+            echo "Increment: $increment"   
           else
             echo "No increment found in commit message."
+            increment="patch"
           fi
+
+          echo "increment=$increment" >> $GITHUB_OUTPUT
       
       - name: Cache node modules
         id: cache-npm
@@ -73,6 +75,9 @@ jobs:
             minor)
               minor=$((minor + 1))
               patch=0
+              ;;
+            patch)
+              patch=$((patch + 1))
               ;;
             *)
               patch=$((patch + 1))
