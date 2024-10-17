@@ -22,11 +22,11 @@ jobs:
           echo "configuration=$configuration" >> $GITHUB_OUTPUT
           
           increment=$(echo "$commit_message" | grep -oP '(?<=\[increment=)[^\]]+')
-          if [ -z "$increment" ]; then
-            increment="patch"
+          if [ "$increment" ]; then
+            echo "Increment: $increment"
+            echo "increment=$increment" >> $GITHUB_OUTPUT
           fi
-          echo "Increment: $increment"
-          echo "increment=$increment" >> $GITHUB_OUTPUT
+          
       
       - name: Cache node modules
         id: cache-npm
