@@ -12,6 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.1
 
+      - name: Read commit
+        run: | 
+          commit_message=$(git log -1 --pretty=%B)
+          echo "Commit message: $commit_message"
+
+          config=$(echo "$commit_message" | grep -oP '(?<=\[configuration=)[^\]]+')
+          echo "$config"
+      
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v4.1.1
