@@ -16,10 +16,12 @@ jobs:
 
     steps:
       - name: Decrypt Credentials
+        id: credentials
         env:
           KEY: ${{ secrets.BUILD_KEY }}
         run: |
-          echo U2FsdGVkX1/+dRZ14SJXVDiJpAaCbiAv0mIwIs5LgZg\= | openssl enc -aes-256-cbc -d -k "$KEY" -pbkdf2 -a
+          companyBuild=$(echo ${{ github.event.inputs.companyCredentials }} | openssl enc -aes-256-cbc -d -k "$KEY" -pbkdf2 -a)
+          echo "companyBuild=$companyBuild" >> $GITHUB_OUTPUT
       
       - name: Checkout code
         uses: actions/checkout@v4.2.1
@@ -43,7 +45,7 @@ jobs:
         run: npm install
 
       - name: Build Angular app
-        run: npm run build:${{ github.event.inputs.companyCredentials }}
+        run: npm run build:${{ steps.credentials.outputs.companyBuild }}
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4.4.3
