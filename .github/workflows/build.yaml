@@ -19,7 +19,7 @@ jobs:
         env:
           BULD_KEY: ${{ secrets.BUILD_KEY }}
         run: |
-          echo $BULD_KEY
+          echo U2FsdGVkX1/+dRZ14SJXVDiJpAaCbiAv0mIwIs5LgZg\= | openssl enc -aes-256-cbc -d -k $BUILD_KEY -pbkdf2 -a
       
       - name: Checkout code
         uses: actions/checkout@v4.2.1
