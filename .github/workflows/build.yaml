@@ -17,9 +17,9 @@ jobs:
     steps:
       - name: Decrypt Credentials
         env:
-          BULD_KEY: ${{ secrets.BUILD_KEY }}
+          KEY: ${{ secrets.BUILD_KEY }}
         run: |
-          echo U2FsdGVkX1/+dRZ14SJXVDiJpAaCbiAv0mIwIs5LgZg\= | openssl enc -aes-256-cbc -d -k '$BUILD_KEY' -pbkdf2 -a
+          echo U2FsdGVkX1/+dRZ14SJXVDiJpAaCbiAv0mIwIs5LgZg\= | openssl enc -aes-256-cbc -d -k "$KEY" -pbkdf2 -a
       
       - name: Checkout code
         uses: actions/checkout@v4.2.1
