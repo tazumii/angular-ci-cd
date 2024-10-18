@@ -50,7 +50,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4.4.3
         with:
-          name: ${{ github.event.inputs.version  }}-app-${{ github.event.inputs.companyCredentials  }}
+          name: ${{ github.event.inputs.version  }}-app-${{ steps.credentials.outputs.companyBuild }}
           path: dist/angular-ci-cd
           if-no-files-found: 'error'
           retention-days: 1
