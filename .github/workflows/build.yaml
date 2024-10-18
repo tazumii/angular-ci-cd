@@ -19,7 +19,7 @@ jobs:
         env:
           BULD_KEY: ${{ secrets.BUILD_KEY }}
         run: |
-          echo ${{github.event.inputs.companyCredentials}} | openssl enc -aes-256-cbc -d -k $BULD_KEY -pbkdf2 -a
+          echo $BULD_KEY
       
       - name: Checkout code
         uses: actions/checkout@v4.2.1
