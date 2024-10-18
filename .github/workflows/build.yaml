@@ -19,7 +19,7 @@ jobs:
         env:
           BULD_KEY: ${{ secrets.BUILD_KEY }}
         run: |
-          echo U2FsdGVkX1/+dRZ14SJXVDiJpAaCbiAv0mIwIs5LgZg\= | openssl enc -aes-256-cbc -d -k 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKRDD21QDUSass3c 3QK2YV31XO7IY/+Z4pdZsyni8vvI++dcvNzHk6FotTcinxNUQnd0oVrlFbNFCT8U ZK8KXaBgzT4HvP1wQS8yML1NFYvXW9tIqmVp/gDydv6Mr4+q1NIT8GwNS7ICjKml nvXl5mzxc0BM1cjJgjebOciP9PzVAgMBAAECgYADELlN+et1d0mU6+U38r1YaobE cfrjvzRqTKM6SeDs7/A7fhCMMjFAFtsi30OGsdDXt9Z3AsVn5gbpJXFHjvL2To+3 0+Sd7XoVZLaocn/E/ocVMrp6nkAs2BDRPv0vkpU6JDKZwr0B4Pt73b2scEKylICI wuRvoQmu5bqIu8+VAQJBANQW++S25l9W+aJ/Z/uRTLFHQgH1aOdfyqzfx16CD+8B 5FEJkAMkOjt3KReyB1MD+Nj8YaY/qVgE9uNAe7AacBUCQQDGRSS0MyG4ycqj/HIs ALCJ6R4Gg03+KS55/e1Umjp/KaU/SuyBTntWmj5cnzx0gScGBScyKZXR68m86D+d bsnBAkAFB259o+Cejh9pPQAoNO/OnFPyW/Fa2yihJMVDdm4OSssxKLrjeC5xTogI 6c3GqCd0bbebC5NmZOe9x7+nE1lpAkEAvr11+gXWwzceQ3RxQfPH4mTqBcn8Fi74 D1RCJcnZzMv7tVAXBq7B6SaqJ+DpAAvfxuLeOlvXTgRQJ/QmfwY+AQJBAIQu/WLX oN/aF6cQGhXQGqNJDso7ia/OXUxH6jLGvUEyllMSBNphyDxiPMLDx42pqIqW81mK DWHT6XY0cdc4uo4=' -pbkdf2 -a
+          echo U2FsdGVkX1/+dRZ14SJXVDiJpAaCbiAv0mIwIs5LgZg\= | openssl enc -aes-256-cbc -d -k '$BUILD_KEY' -pbkdf2 -a
       
       - name: Checkout code
         uses: actions/checkout@v4.2.1
