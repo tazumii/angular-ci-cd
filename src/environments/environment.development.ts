@@ -1,4 +1,6 @@
 export const environment = {
     production: false,
-    name: 'dev'
+    name: 'dev',
+    hash: 'old-hash',
+    version: 'old-version'
 };
