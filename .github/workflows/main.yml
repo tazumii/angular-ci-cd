@@ -67,8 +67,8 @@ jobs:
         run: | 
           for file in $(find . -name "environment.*.ts"); do
             echo "Updating $file"
-            sed -i "s/hash: '.*'/hash: 'hash'/" $file
-            sed -i "s/version: '.*'/version: 'version'/" $file
+            sed -i "s/\(hash:\s*['\"]\)[^'\"]*/\1HASH/" $file
+            sed -i "s/\(version:\s*['\"]\)[^'\"]*/\1VERSION/" $file
           done
           
       - name: Create GitHub Release  
