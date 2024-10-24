@@ -62,6 +62,14 @@ jobs:
           
           git tag $new_tag
           git push origin $new_tag
+
+      - name: Change envoirment files
+        run: | 
+          for file in $(find . -name "environment.*.ts"); do
+            echo "Updating $file"
+            sed -i "s/hash: '.*'/hash: 'hash'/" $file
+            sed -i "s/version: '.*'/version: 'version'/" $file
+          done
           
       - name: Create GitHub Release  
         uses: ncipollo/release-action@v1
